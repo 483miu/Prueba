@@ -10,6 +10,7 @@ import scala.collection.JavaConverters._
 object ConsumerMain{
 
   var datosP = scala.collection.mutable.ArrayBuffer.empty[DatosP]
+  println(datosP)
 
 
   def main(args: Array[String]): Unit = {
@@ -53,8 +54,6 @@ object ConsumerMain{
           "caracteristica" -> parse2.get("caracteristica").getAsString
         ) */
 
-     //     var datosP = scala.collection.mutable.ArrayBuffer.empty[DatosP]
-
           var objeto = DatosP(
             parse2.get("nombre").getAsString,
             parse2.get("edad").getAsInt,
@@ -62,14 +61,13 @@ object ConsumerMain{
             parse2.get("ciudad").getAsString,
             parse2.get("caracteristica").getAsString
           )
-        datosP += objeto
 
-/*        val session = SparkSession.builder().appName("DataSetConsumidor").master("local[1]").getOrCreate()
-        import session.implicits._
-        val datosPDataSet = datosP.toDS()
-        datosPDataSet.printSchema()*/
+          datosP.clear()
+          datosP += objeto
 
       //  mongo.insertarDocumento("PERSONAS",doc)
+        val dataSet = DataSetSpark
+        dataSet.recibeArray(datosP)
         mongo.desconectar()
       }
     }
